@@ -83,6 +83,7 @@ studentForm.appendChild(graduation_Input);
 // Is this student an Undergrad? 
 const undergrad_input = document.createElement("select");
 undergrad_input.required = true;  // Add the required attribute
+undergrad_input.id = "undergrad_input";  // Add an ID for easier identification
 let array = ["Are you an Undergrad?", "Yes", "No"];
 // Create and append the options
 for (let i = 0; i < array.length; i++) {
@@ -117,7 +118,7 @@ studentForm.addEventListener("submit", function (event) {
     // Iterate through form elements and store data in the object
     for (const input of studentForm.elements) {
         // Check if the element is an input field and has a value
-        if (input.nodeName === "INPUT" && input.value !== "") {
+        if (input.nodeName === "INPUT" || (input.nodeName === "SELECT") && input.value !== "") {
             formData[input.id] = input.value;
         }
     }
