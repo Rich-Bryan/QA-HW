@@ -30,10 +30,12 @@ dataInfo.appendChild(studentForm);
 
 // Create input for first name
 const firstName_Input = createInput("first_name_info", "Enter your First Name", "input_group");
+firstName_Input.required = true;  // Add the required attribute
 studentForm.appendChild(firstName_Input);
 
 // Create input for last name
 const lastName_Input = createInput("last_name_info", "Enter your Last Name", "input_group");
+lastName_Input.required = true;  // Add the required attribute
 studentForm.appendChild(lastName_Input);
 
 // TUID 
@@ -57,22 +59,27 @@ studentForm.appendChild(TUID_Input);
 
 // Email Address
 const email_Input = createInput("email_Input", "Enter Email Address", "input_group");
+email_Input.required = true;  // Add the required attribute
 studentForm.appendChild(email_Input);
 
 // Phone number
 const phone_Input = createInput("phone_Input", "Enter Phone Number", "input_group");
+phone_Input.required = true;  // Add the required attribute
 studentForm.appendChild(phone_Input);
 
 // Major
 const major_Input = createInput("major_Input", "Enter Major", "input_group");
+major_Input.required = true;  // Add the required attribute
 studentForm.appendChild(major_Input);
 
 // Expected Graduation Date
 const graduation_Input = createInput("graduation_Input", "Enter Graduation Date", "input_group");
+graduation_Input.required = true;  // Add the required attribute
 studentForm.appendChild(graduation_Input);
 
 // Is this student an Undergrad? 
 const undergrad_input = document.createElement("select");
+undergrad_input.required = true;  // Add the required attribute
 let array = ["Are you an Undergrad?", "Yes", "No"];
 // Create and append the options
 for (let i = 0; i < array.length; i++) {
@@ -95,3 +102,54 @@ submitButton.type = "submit";
 submitButton.textContent = "Submit";
 submitButton.id = "button";
 studentForm.appendChild(submitButton);
+
+// Add a submit event listener to the form
+studentForm.addEventListener("submit", function (event) {
+    // Prevent the default form submission
+    event.preventDefault();
+
+    // Create an object to store the form data
+    const formData = {};
+
+    // Iterate through form elements and store data in the object
+    for (const input of studentForm.elements) {
+        // Check if the element is an input field and has a value
+        if (input.nodeName === "INPUT" && input.value !== "") {
+            formData[input.id] = input.value;
+        }
+    }
+
+    // Convert the form data object to JSON
+    const jsonData = JSON.stringify(formData, null, 2);
+
+    // Save the JSON data to a file 
+    saveJSONToFile(jsonData, "formData.json");
+
+    // Optionally, you can reset the form after submission
+    studentForm.reset();
+});
+
+function saveJSONToFile(jsonData, fileName) {
+    // This is a simplified example. In a real-world scenario, you would need server-side code to handle file saving.
+
+    // Create a file containing the JSON data
+    const file = new Blob([jsonData], { type: "application/json" });
+
+    // Create a link element
+    const link = document.createElement("a");
+
+    // Set the href attribute to a data URL representing the Blob
+    link.href = URL.createObjectURL(file);
+
+    // Set the download attribute with the desired file name
+    link.download = fileName;
+
+    // Append the link to the document
+    document.body.appendChild(link);
+
+    // Trigger a click event on the link to start the download
+    link.click();
+
+    // Remove the link from the document
+    document.body.removeChild(link);
+}
