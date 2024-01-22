@@ -41,12 +41,16 @@ studentForm.appendChild(lastName_Input);
 // TUID 
 const TUID_Input = createInput("TUID_number", "Enter TUID", "input_group");
 TUID_Input.required = true;  // Add the required attribute
-// Use input event listener to check for numeric characters and limit to max 2 digits
+
+// Use input event listener to check for numeric characters and limit to max 9 digits
 TUID_Input.addEventListener("input", function (event) {
     const inputValue = event.target.value;
 
     // Remove non-numeric characters
     const numericValue = inputValue.replace(/[^0-9]/g, '');
+
+    // Set the pattern attribute for exactly 9 digits
+    TUID_Input.setAttribute("pattern", "\\b\\d{9}\\b");
 
     // Limit to 9 digits
     const limitedValue = numericValue.slice(0, 9);
@@ -54,7 +58,6 @@ TUID_Input.addEventListener("input", function (event) {
     // Update the input value
     event.target.value = limitedValue;
 });
-
 studentForm.appendChild(TUID_Input);
 
 // Email Address
